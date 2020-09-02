@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Sidebar.css";
 import SidebarOption from "./SidebarOption";
 
@@ -16,7 +16,23 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddIcon from "@material-ui/icons/Add";
 
+// firebase imports
+import { db } from "./firebase";
+
 function Sidebar() {
+  const [channels, setChannels] = useState([]);
+
+  useEffect(() => {
+    db.collection("rooms").onSnapshot((snapshot) => {
+      setChannels(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          name: doc.data().name,
+        }))
+      );
+    });
+  }, []);
+
   return (
     <div className="sidebar">
       <div className="sidebar__header">
@@ -41,6 +57,11 @@ function Sidebar() {
       <SidebarOption Icon={ExpandMoreIcon} title="Channel" />
       <hr />
       <SidebarOption Icon={AddIcon} title="Add Channel" />
+
+      {/* Fetching channel from firebase  */}
+      {channels.map((channel) => (
+        <SidebarOption title={channel.name} id={channel.id} />
+      ))}
     </div>
   );
 }
