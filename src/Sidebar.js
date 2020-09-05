@@ -56,7 +56,7 @@ function Sidebar() {
       <hr />
       <SidebarOption Icon={ExpandMoreIcon} title="Channel" />
       <hr />
-      <SidebarOption Icon={AddIcon} title="Add Channel" />
+      <SidebarOption Icon={AddIcon} addChannelOption title="Add Channel" />
 
       {/* Fetching channel from firebase  */}
       {channels.map((channel) => (
